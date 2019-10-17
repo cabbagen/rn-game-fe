@@ -20,9 +20,9 @@ export default class Login extends Component {
   render() {
     return (
       <ScrollView style={styles.loginPage}>
-        { this.renderGameLogoContent() }
-        { this.renderLoginFormContent() }
-        { this.renderLoginButtonContent() }
+        {this.renderGameLogoContent()}
+        {this.renderLoginFormContent()}
+        {this.renderLoginButtonContent()}
       </ScrollView>
     );
   }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, Text, ScrollView } from 'react-native';
+import { View, Image, Text, ScrollView, WebView } from 'react-native';
 import { Carousel, SearchBar } from '@ant-design/react-native';
 import Loading from '../../components/Loading/index';
 import Footer from '../../components/Footer/index';
@@ -29,6 +29,10 @@ export default class Home extends Component {
   }
 
   componentDidMount() {
+    this.fetchIndexData();
+  }
+
+  fetchIndexData() {
     Network.get('/index/data').then((result) => {
       if (result.status === 401) {
         this.props.navigation.navigate('Login');
@@ -58,11 +62,11 @@ export default class Home extends Component {
     return (
       <View style={styles.homePage}>
         <View style={[styles.homeSearch, extraSearchStyle]}>
-          { this.renderSearchContent() }
+          {this.renderSearchContent()}
         </View>
         <ScrollView scrollEventThrottle onScroll={this.handleScrollViewScroll.bind(this)}>
-          { this.renderBannerContent() }
-          { this.renderCategoriesContent() }
+          {this.renderBannerContent()}
+          {this.renderCategoriesContent()}
         </ScrollView>
       </View>
     );
@@ -118,7 +122,7 @@ export default class Home extends Component {
     const { categories } = this.state;
     return (
       <View>
-        { categories.map(this.renderCategoryContent.bind(this)) }
+        {categories.map(this.renderCategoryContent.bind(this))}
         <Footer />
       </View>
     );

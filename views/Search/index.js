@@ -76,7 +76,7 @@ export default class Search extends Component {
           />
         </View>
         <View style={styles.searchGames}>
-          { this.renderGamesContent() }
+          {this.renderGamesContent()}
         </View>
       </View>
     );
@@ -114,8 +114,8 @@ export default class Search extends Component {
         ref={target => this.gameScrollView = target}
         onScroll={this.handleScrollViewScroll.bind(this)}
       >
-        { nodes }
-        { this.renderFooterContent() }
+        {nodes}
+        {this.renderFooterContent()}
       </ScrollView>
     )
   }

@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, Image } from 'react-native';
+import { AsyncStorage } from 'react-native';
+import { View, Text, Image, Alert } from 'react-native';
+import Loading from '../../components/Loading/index';
 import Ionicons from 'react-native-vector-icons/FontAwesome';
-
-// import Network from '../../utils/network';
+import Network from '../../utils/network';
+import { marsColor, venusColor } from '../../theme';
 
 import styles from './styles';
 
@@ -14,48 +16,55 @@ export default class MyCenter extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: true,
       userInfo: {},
     };
   }
 
-  async componentDidMount() {
-
-  }
-
-  handleFetchUserInfo() {
+  componentDidMount() {
+    Network.get('/user/userInfo').then((result) => {
+      if (result.status !== 200) {
+        return;
+      }
+      this.setState({ loading: false, userInfo: result.data });
+    });
   }
 
   render() {
+    if (this.state.loading) {
+      return <Loading />
+    }
     return (
       <View style={styles.myCenterPage}>
         <View style={styles.backgroundTop}>
-          { this.renderUserInfoContent() }
-          { this.renderUserExitButton() }
+          {this.renderUserInfoContent()}
+          {this.renderUserExitButton()}
         </View>
         <View style={styles.contentBottom}>
-          { this.renderEmptyContent() }
+          {this.renderEmptyContent()}
         </View>
       </View>
     );
   }
 
   renderUserInfoContent() {
+    const { userInfo } = this.state;
     return (
       <View style={styles.userInfo}>
         <View style={styles.userInfoItem}>
-          <Image
-            resizeMode='contain'
-            style={styles.userInfoItemImg}
-            imageStyle={{ borderRadius: 40 }}
-            source={{ uri: 'http://localhost:9090/static/images/avatar.jpg' }}
+          <Image resizeMode='contain' style={styles.userInfoItemImg} imageStyle={{ borderRadius: 40 }} source={{ uri: userInfo.avatar }} />
+        </View>
+        <View style={styles.userInfoItem}>
+          <Text style={styles.userInfoItemText}>{userInfo.nickname}</Text>
+          <Ionicons
+            size={16}
+            style={styles.userIcon}
+            color={userInfo.gender === 1 ? marsColor : venusColor}
+            name={userInfo.gender === 1 ? 'mars' : 'venus'}
           />
         </View>
         <View style={styles.userInfoItem}>
-          <Text style={styles.userInfoItemText}>任性的毛豆</Text>
-          <Ionicons style={styles.userIcon} size={16} color="#ff0000" name="venus" />
-        </View>
-        <View style={styles.userInfoItem}>
-          <Text style={styles.userInfoItemText}>这个人很懒，什么都没有留下...</Text>
+          <Text style={styles.userInfoItemText}>{ userInfo.extra || '这个人很懒，什么都没有留下...' }</Text>
         </View>
       </View>
     );
@@ -64,9 +73,27 @@ export default class MyCenter extends Component {
   renderUserExitButton() {
     return (
       <View style={styles.userExit}>
-        <Text style={styles.userExitText}>退出</Text>
+        <Text style={styles.userExitText} onPress={this.handleUserExit.bind(this)}>退出</Text>
       </View>
     );
+  }
+
+  handleUserExit() {
+    Alert.alert(
+      '温馨提示',
+      '您确定要退出吗',
+      [
+        { text: '取消' },
+        { text: '确定', onPress: this.handleRemoveToken.bind(this)}
+      ],
+      { cancelable: false }
+    );
+  }
+
+  handleRemoveToken() {
+    AsyncStorage.removeItem('token').then(() => {
+      this.props.navigation.navigate('Login');
+    });
   }
 
   renderEmptyContent() {

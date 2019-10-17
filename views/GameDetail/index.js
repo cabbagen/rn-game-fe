@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, Image, ScrollView, TouchableOpacity, Alert, Platform } from 'react-native';
 import HTMLView from 'react-native-htmlview'
 import Loading from '../../components/Loading';
 
@@ -9,7 +9,8 @@ import styles from './styles';
 
 export default class GameDetail extends Component {
   static navigationOptions = {
-    title: '游戏详情'
+    title: '游戏详情',
+    headerBackTitle: Platform.OS === 'ios' ? 'Back' : '返回'
   }
 
   constructor(props) {
@@ -62,7 +63,13 @@ export default class GameDetail extends Component {
   }
 
   handleToGameOpecation(gameInfo) {
-    console.log('game', gameInfo)
-    // this.props.navigation.navigate('')
+    if (gameInfo.id !== 288) {
+      Alert.alert('游戏未上线，敬请期待');
+      return
+    }
+    this.props.navigation.navigate('GamePlay', {
+      title: gameInfo.name,
+      uri: `${gameInfo.playLink}?id=${gameInfo.id}`,
+    });
   }
 }

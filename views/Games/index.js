@@ -13,8 +13,8 @@ export default class Games extends Component {
   render() {
     return (
       <View style={styles.gamesPage}>
-        { this.renderBannerContent() }
-        { this.renderPlayedGamesContent() }
+        {this.renderBannerContent()}
+        {this.renderPlayedGamesContent()}
       </View>
     );
   }

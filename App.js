@@ -12,6 +12,7 @@ import HomeScreen from './views/Home/index';
 import SearchScreen from './views/Search/index';
 import GameDetailScreen from './views/GameDetail/index';
 import LoginScreen from './views/Login/index';
+import GamePlayScreen from './views/gamePlay/index';
 
 import CategoryScreen from './views/Category/index';
 import GamesScreen from './views/Games/index';
@@ -24,16 +25,19 @@ const HomeScreenStack = createStackNavigator({
   Search: SearchScreen,
   GameDetail: GameDetailScreen,
   Login: LoginScreen,
+  GamePlay: GamePlayScreen,
 });
 
 const CategoryScreenStack = createStackNavigator({
   Category: CategoryScreen,
   GameDetail: GameDetailScreen,
+  GamePlay: GamePlayScreen,
 });
 
 const GamesScreenStack = createStackNavigator({
   Games: GamesScreen,
   GameDetail: GameDetailScreen,
+  GamePlay: GamePlayScreen,
 })
 
 const AppNavigator = createBottomTabNavigator({

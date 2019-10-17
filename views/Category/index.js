@@ -38,6 +38,7 @@ export default class Category extends Component {
 
   componentDidMount() {
     const { pageNo, pageSize } = this.state.pagination;
+
     Promise.all([
       Network.get('/game/categories'),
       Network.get('/game/games', { categoryId: 1, pageNo, pageSize }),
@@ -65,8 +66,8 @@ export default class Category extends Component {
 
     return (
       <View style={styles.categoryPage}>
-        { this.renderCategoryNavigationContent() }
-        { this.renderGamesContent() }
+        {this.renderCategoryNavigationContent()}
+        {this.renderGamesContent()}
       </View>
     );
   }
@@ -79,7 +80,7 @@ export default class Category extends Component {
         style={styles.categoryNav}
         showsHorizontalScrollIndicator={false}
       >
-        { categories.map(this.renderNavItemContent.bind(this)) }
+        {categories.map(this.renderNavItemContent.bind(this))}
       </ScrollView>
     )
   }
@@ -124,8 +125,8 @@ export default class Category extends Component {
         ref={target => this.gameScrollView = target}
         onScroll={this.handleScrollViewScroll.bind(this)}
       >
-        { nodes }
-        { this.renderFooterContent() }
+        {nodes}
+        {this.renderFooterContent()}
       </ScrollView>
     );
   }
