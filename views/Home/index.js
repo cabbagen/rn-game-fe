@@ -26,10 +26,18 @@ export default class Home extends Component {
       scrollHeight: 0,
       searchValue: '',
     };
+    this.didFocusSubscription = null;
   }
 
   componentDidMount() {
     this.fetchIndexData();
+    this.didFocusSubscription = this.props.navigation.addListener('didFocus',this.fetchIndexData.bind(this));
+  }
+
+  componentWillUnmount() {
+    if (this.didFocusSubscription) {
+      this.didFocusSubscription.remove();
+    }
   }
 
   fetchIndexData() {
